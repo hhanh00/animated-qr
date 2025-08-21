@@ -1,0 +1,13 @@
+display_name: AnimatedQR
+
+icon: misc/icon.png
+
+keywords:
+  - File
+
+generic_name: AnimatedQR
+
+metainfo: linux/packaging/animated_qr.appdata.xml
+
+categories:
+  - Utility

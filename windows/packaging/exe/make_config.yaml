@@ -1,0 +1,6 @@
+# script_template: "setup.iss"
+app_id: f0abac48-4d4c-44bc-b151-d9fac0c116e5
+display_name: AnimatedQR
+create_desktop_icon: true
+locales:
+  - en
