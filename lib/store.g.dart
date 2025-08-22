@@ -42,11 +42,63 @@ mixin _$AppStore on StoreBase, Store {
     });
   }
 
+  late final _$delayAtom = Atom(name: 'StoreBase.delay', context: context);
+
+  @override
+  int get delay {
+    _$delayAtom.reportRead();
+    return super.delay;
+  }
+
+  @override
+  set delay(int value) {
+    _$delayAtom.reportWrite(value, super.delay, () {
+      super.delay = value;
+    });
+  }
+
+  late final _$repairAtom = Atom(name: 'StoreBase.repair', context: context);
+
+  @override
+  int get repair {
+    _$repairAtom.reportRead();
+    return super.repair;
+  }
+
+  @override
+  set repair(int value) {
+    _$repairAtom.reportWrite(value, super.repair, () {
+      super.repair = value;
+    });
+  }
+
+  late final _$saveAsyncAction = AsyncAction(
+    'StoreBase.save',
+    context: context,
+  );
+
+  @override
+  Future<void> save() {
+    return _$saveAsyncAction.run(() => super.save());
+  }
+
+  late final _$loadAsyncAction = AsyncAction(
+    'StoreBase.load',
+    context: context,
+  );
+
+  @override
+  Future<void> load() {
+    return _$loadAsyncAction.run(() => super.load());
+  }
+
   @override
   String toString() {
     return '''
 type: ${type},
-errorLevel: ${errorLevel}
+errorLevel: ${errorLevel},
+delay: ${delay},
+repair: ${repair}
     ''';
   }
 }

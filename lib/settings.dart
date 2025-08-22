@@ -1,7 +1,10 @@
 import 'package:animated_qr/router.dart';
 import 'package:animated_qr/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:gap/gap.dart';
 import 'package:mobx/mobx.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -39,6 +42,7 @@ class SettingsPageState extends State<SettingsPage> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    final t = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(title: Text("Settings")),
       body: SingleChildScrollView(
@@ -48,27 +52,79 @@ class SettingsPageState extends State<SettingsPage> with RouteAware {
             key: formKey,
             child: Column(
               children: [
-                FormBuilderSlider(
-                  name: "type",
-                  decoration: InputDecoration(
-                    label: Text("QR Code Type"),
-                    helper: Text("Larger types are more dense"),
+                Card(
+                  elevation: 1,
+                  margin: EdgeInsets.all(8),
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(8),
+                    child: Column(
+                      children: [
+                        Text("QR Codes", style: t.titleMedium),
+                        Gap(16),
+                        FormBuilderSlider(
+                          name: "type",
+                          decoration: InputDecoration(
+                            label: Text("QR Code Size"),
+                          ),
+                          initialValue: appStore.type.toDouble(),
+                          min: 1,
+                          max: 40,
+                          divisions: 39,
+                        ),
+                        Gap(16),
+                        FormBuilderSlider(
+                          name: "error_level",
+                          decoration: InputDecoration(
+                            label: Text("Error Correction Level"),
+                            helper: Text(
+                              "higher ECL is more robust but takes more space",
+                            ),
+                          ),
+                          initialValue: appStore.errorLevel.toDouble(),
+                          min: 0,
+                          max: 3,
+                          divisions: 3,
+                        ),
+                        Gap(16),
+                        FormBuilderTextField(
+                          name: "delay",
+                          decoration: InputDecoration(
+                            label: Text("Duration between QR codes (ms)"),
+                          ),
+                          initialValue: appStore.delay.toString(),
+                          validator: FormBuilderValidators.integer(),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  initialValue: appStore.type.toDouble(),
-                  min: 1,
-                  max: 40,
-                  divisions: 39,
                 ),
-                FormBuilderSlider(
-                  name: "error_level",
-                  decoration: InputDecoration(
-                    label: Text("Error Correction Level"),
-                    helper: Text("higher ECL are more robust but take more space"),
+                Card(
+                  elevation: 1,
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(8),
+                    child: Column(
+                      children: [
+                        Text("Fountain Codes", style: t.titleMedium),
+                        Gap(8),
+                        FormBuilderTextField(
+                          name: "repair",
+                          decoration: InputDecoration(
+                            label: Text("Repair Packets per Block"),
+                          ),
+                          initialValue: appStore.repair.toString(),
+                          validator: FormBuilderValidators.integer(),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  initialValue: appStore.errorLevel.toDouble(),
-                  min: 0,
-                  max: 3,
-                  divisions: 3,
                 ),
               ],
             ),
