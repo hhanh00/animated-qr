@@ -6,5 +6,31 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-String greet({required String name}) =>
-    RustLib.instance.api.crateApiSimpleGreet(name: name);
+Future<List<Uint8List>> encode({
+  required String path,
+  required RaptorQParams params,
+}) => RustLib.instance.api.crateApiSimpleEncode(path: path, params: params);
+
+class RaptorQParams {
+  final int version;
+  final int ecLevel;
+  final int repair;
+
+  const RaptorQParams({
+    required this.version,
+    required this.ecLevel,
+    required this.repair,
+  });
+
+  @override
+  int get hashCode => version.hashCode ^ ecLevel.hashCode ^ repair.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RaptorQParams &&
+          runtimeType == other.runtimeType &&
+          version == other.version &&
+          ecLevel == other.ecLevel &&
+          repair == other.repair;
+}

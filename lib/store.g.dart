@@ -24,21 +24,18 @@ mixin _$AppStore on StoreBase, Store {
     });
   }
 
-  late final _$errorLevelAtom = Atom(
-    name: 'StoreBase.errorLevel',
-    context: context,
-  );
+  late final _$ecLevelAtom = Atom(name: 'StoreBase.ecLevel', context: context);
 
   @override
-  int get errorLevel {
-    _$errorLevelAtom.reportRead();
-    return super.errorLevel;
+  int get ecLevel {
+    _$ecLevelAtom.reportRead();
+    return super.ecLevel;
   }
 
   @override
-  set errorLevel(int value) {
-    _$errorLevelAtom.reportWrite(value, super.errorLevel, () {
-      super.errorLevel = value;
+  set ecLevel(int value) {
+    _$ecLevelAtom.reportWrite(value, super.ecLevel, () {
+      super.ecLevel = value;
     });
   }
 
@@ -96,7 +93,7 @@ mixin _$AppStore on StoreBase, Store {
   String toString() {
     return '''
 type: ${type},
-errorLevel: ${errorLevel},
+ecLevel: ${ecLevel},
 delay: ${delay},
 repair: ${repair}
     ''';

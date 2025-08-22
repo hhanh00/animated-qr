@@ -34,8 +34,12 @@ class SettingsPageState extends State<SettingsPage> with RouteAware {
       if (form == null) return;
       final int type = form.fields["type"]!.value.toInt();
       final int errorLevel = form.fields["error_level"]!.value.toInt();
+      final int delay = int.parse(form.fields["delay"]!.value);
+      final int repair = int.parse(form.fields["repair"]!.value);
       appStore.type = type;
-      appStore.errorLevel = errorLevel;
+      appStore.ecLevel = errorLevel;
+      appStore.delay = delay;
+      appStore.repair = repair;
       await appStore.save();
     });
   }
@@ -80,7 +84,7 @@ class SettingsPageState extends State<SettingsPage> with RouteAware {
                               "higher ECL is more robust but takes more space",
                             ),
                           ),
-                          initialValue: appStore.errorLevel.toDouble(),
+                          initialValue: appStore.ecLevel.toDouble(),
                           min: 0,
                           max: 3,
                           divisions: 3,
@@ -113,7 +117,7 @@ class SettingsPageState extends State<SettingsPage> with RouteAware {
                         FormBuilderTextField(
                           name: "repair",
                           decoration: InputDecoration(
-                            label: Text("Repair Packets per Block"),
+                            label: Text("Repair Packets"),
                           ),
                           initialValue: appStore.repair.toString(),
                           validator: FormBuilderValidators.integer(),

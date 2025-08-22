@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:animated_qr/router.dart';
 import 'package:animated_qr/store.dart';
 import 'package:file_picker/file_picker.dart';
@@ -6,6 +10,7 @@ import 'package:animated_qr/src/rust/api/simple.dart';
 import 'package:animated_qr/src/rust/frb_generated.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +22,17 @@ Future<void> main() async {
   );
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<StatefulWidget> createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+  List<Widget> qrCodes = [];
+  int i = 0;
+  Timer? timer;
 
   @override
   Widget build(BuildContext context) {
@@ -34,26 +48,38 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          'Action: Call Rust `greet("Tom")`\nResult: `${greet(name: "Tom")}`',
-        ),
-      ),
+      body:
+        (i < qrCodes.length) ? qrCodes[i] : null,
     );
   }
 
   void onOpen() async {
+    final size = MediaQuery.of(context).size;
+    final minSize = min(size.height, size.width);
     final docDir = await getApplicationDocumentsDirectory();
     final result = await FilePicker.platform.pickFiles(
       dialogTitle: "Choose the file you want to share",
       initialDirectory: docDir.path,
     );
     if (result != null && result.xFiles.isNotEmpty) {
-      // final f = result.xFiles.first;
-      // final data = await f.readAsBytes();
-      // final qr = QrCode(1, 1);
-      // QrImageView(data: "");
-      // await encode(data);
+      final path = result.xFiles.first.path;
+      final packets = await encode(
+        path: path,
+        params: RaptorQParams(
+          version: appStore.type,
+          ecLevel: appStore.ecLevel,
+          repair: appStore.repair,
+        ),
+      );
+      qrCodes = packets.map((p) {
+        final qr = QrCode(appStore.type, appStore.ecLevel)
+          ..addByteData(ByteData.sublistView(p));
+        return Center(child: QrImageView.withQr(qr: qr, size: minSize * 0.8));
+      }).toList();
+      timer?.cancel();
+      timer = Timer.periodic(Duration(milliseconds: appStore.delay), (_) {
+        setState(() => i = (i + 1) % qrCodes.length);
+      });
     }
   }
 
