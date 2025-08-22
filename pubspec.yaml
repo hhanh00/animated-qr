@@ -23,6 +23,8 @@ dependencies:
   flutter_mobx: ^2.3.0
   mobx: ^2.5.0
   shared_preferences: ^2.5.3
+  form_builder_validators: ^11.2.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
