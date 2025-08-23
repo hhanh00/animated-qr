@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.1.0...animated_qr-v1.2.0) (2025-08-23)
+
+
+### Features
+
+* scan QR codes and save file ([#10](https://github.com/hhanh00/animated-qr/issues/10)) ([0c2afb2](https://github.com/hhanh00/animated-qr/commit/0c2afb2f9937756886f743be4f1ac2cc33fa7da1))
+
+
+### Bug Fixes
+
+* move qr codes to show page ([#12](https://github.com/hhanh00/animated-qr/issues/12)) ([3953d3e](https://github.com/hhanh00/animated-qr/commit/3953d3e9176db7b4bd5adeb876e95db63aaa2a24))
+
 ## [1.1.0](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.0.2...animated_qr-v1.1.0) (2025-08-22)
 
 
