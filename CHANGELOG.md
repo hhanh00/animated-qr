@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.1...animated_qr-v1.2.2) (2025-08-23)
+
+
+### Bug Fixes
+
+* android appname ([#15](https://github.com/hhanh00/animated-qr/issues/15)) ([2f34056](https://github.com/hhanh00/animated-qr/commit/2f340569574610ecafab515d52ac52411915a881))
+
 ## [1.2.1](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.0...animated_qr-v1.2.1) (2025-08-23)
 
 
