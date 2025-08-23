@@ -35,6 +35,7 @@ class ScanPageState extends State<ScanPage> {
         if (prev == null || !eq.equals(data, prev)) {
           prev = data;
           packets!.add(data);
+          setState(() {});
           final result = await decode(packets: packets!);
           if (result != null) {
             completed.complete(result);
@@ -43,18 +44,33 @@ class ScanPageState extends State<ScanPage> {
       });
       final data = await completed.future;
       sub.cancel();
+      print("Finished");
+      router.pop();
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await FilePicker.platform.saveFile(
           dialogTitle: "Save File",
           bytes: data,
         );
-        router.pop();
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MobileScanner(controller: controller);
+    return Scaffold(
+      body: Stack(
+        children: [
+          MobileScanner(controller: controller),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            child: Text(
+              (packets?.length ?? 0).toString(),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
