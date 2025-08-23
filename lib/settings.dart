@@ -71,9 +71,9 @@ class SettingsPageState extends State<SettingsPage> with RouteAware {
                             label: Text("QR Code Size"),
                           ),
                           initialValue: appStore.type.toDouble(),
-                          min: 1,
+                          min: 10,
                           max: 40,
-                          divisions: 39,
+                          divisions: 30,
                         ),
                         Gap(16),
                         FormBuilderSlider(
