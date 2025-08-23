@@ -47,5 +47,9 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Capture QR Codes</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App does not use the Photo Library</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
