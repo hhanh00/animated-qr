@@ -1,17 +1,12 @@
 import 'dart:async';
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:animated_qr/router.dart';
 import 'package:animated_qr/store.dart';
-import 'package:convert/convert.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_qr/src/rust/api/simple.dart';
 import 'package:animated_qr/src/rust/frb_generated.dart';
-import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,8 +49,6 @@ class HomePageState extends State<HomePage> {
   }
 
   void onOpen() async {
-    final size = MediaQuery.of(context).size;
-    final minSize = min(size.height, size.width);
     final docDir = await getApplicationDocumentsDirectory();
     final result = await FilePicker.platform.pickFiles(
       dialogTitle: "Choose the file you want to share",
@@ -71,21 +64,7 @@ class HomePageState extends State<HomePage> {
           repair: appStore.repair,
         ),
       );
-      qrCodes = packets.map((p) {
-        final qr = QrCode(appStore.type, appStore.ecLevel)
-          ..addByteData(ByteData.sublistView(p));
-        return Center(
-          child: QrImageView.withQr(
-            qr: qr,
-            size: minSize * 0.8,
-            gapless: false,
-          ),
-        );
-      }).toList();
-      timer?.cancel();
-      timer = Timer.periodic(Duration(milliseconds: appStore.delay), (_) {
-        setState(() => i = (i + 1) % qrCodes!.length);
-      });
+      router.push("/show", extra: packets);
     }
   }
 
