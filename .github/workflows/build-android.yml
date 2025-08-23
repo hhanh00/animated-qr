@@ -59,11 +59,11 @@ jobs:
           files: ./*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Upload to Google Play
-      #   if: startsWith(github.ref_name, 'animated_qr-v')
-      #   uses: r0adkll/upload-google-play@v1
-      #   with:
-      #     packageName: cc.methyl.animated_qr
-      #     releaseFiles: ./build/app/outputs/bundle/release/app-release.aab
-      #     track: internal
-      #     serviceAccountJson: misc/gcp.json
+      - name: Upload to Google Play
+        if: startsWith(github.ref_name, 'animated_qr-v')
+        uses: r0adkll/upload-google-play@v1
+        with:
+          packageName: cc.methyl.animated_qr
+          releaseFiles: ./build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          serviceAccountJson: misc/gcp.json
