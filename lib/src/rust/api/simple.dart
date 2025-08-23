@@ -7,14 +7,21 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `ec_level_of`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `DECODER`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `deref`, `initialize`
 
 Future<List<Uint8List>> encode({
   required String path,
   required RaptorQParams params,
 }) => RustLib.instance.api.crateApiSimpleEncode(path: path, params: params);
 
-Future<Uint8List?> decode({required List<Uint8List> packets}) =>
-    RustLib.instance.api.crateApiSimpleDecode(packets: packets);
+Uint8List getQrBytes({required List<int> data}) =>
+    RustLib.instance.api.crateApiSimpleGetQrBytes(data: data);
+
+Future<Uint8List?> decode({required List<int> packet}) =>
+    RustLib.instance.api.crateApiSimpleDecode(packet: packet);
+
+Future<void> endDecode() => RustLib.instance.api.crateApiSimpleEndDecode();
 
 class RaptorQParams {
   final int version;

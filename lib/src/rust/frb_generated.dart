@@ -66,7 +66,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 1206290574;
+  int get rustContentHash => 138159254;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -77,12 +77,16 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
-  Future<Uint8List?> crateApiSimpleDecode({required List<Uint8List> packets});
+  Future<Uint8List?> crateApiSimpleDecode({required List<int> packet});
 
   Future<List<Uint8List>> crateApiSimpleEncode({
     required String path,
     required RaptorQParams params,
   });
+
+  Future<void> crateApiSimpleEndDecode();
+
+  Uint8List crateApiSimpleGetQrBytes({required List<int> data});
 
   Future<void> crateApiSimpleInitApp();
 }
@@ -96,12 +100,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
-  Future<Uint8List?> crateApiSimpleDecode({required List<Uint8List> packets}) {
+  Future<Uint8List?> crateApiSimpleDecode({required List<int> packet}) {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          sse_encode_list_list_prim_u_8_strict(packets, serializer);
+          sse_encode_list_prim_u_8_loose(packet, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -114,14 +118,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_AnyhowException,
         ),
         constMeta: kCrateApiSimpleDecodeConstMeta,
-        argValues: [packets],
+        argValues: [packet],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleDecodeConstMeta =>
-      const TaskConstMeta(debugName: "decode", argNames: ["packets"]);
+      const TaskConstMeta(debugName: "decode", argNames: ["packet"]);
 
   @override
   Future<List<Uint8List>> crateApiSimpleEncode({
@@ -156,7 +160,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "encode", argNames: ["path", "params"]);
 
   @override
-  Future<void> crateApiSimpleInitApp() {
+  Future<void> crateApiSimpleEndDecode() {
     return handler.executeNormal(
       NormalTask(
         callFfi: (port_) {
@@ -165,6 +169,56 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             generalizedFrbRustBinding,
             serializer,
             funcId: 3,
+            port: port_,
+          );
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kCrateApiSimpleEndDecodeConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleEndDecodeConstMeta =>
+      const TaskConstMeta(debugName: "end_decode", argNames: []);
+
+  @override
+  Uint8List crateApiSimpleGetQrBytes({required List<int> data}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_list_prim_u_8_loose(data, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_prim_u_8_strict,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+        constMeta: kCrateApiSimpleGetQrBytesConstMeta,
+        argValues: [data],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleGetQrBytesConstMeta =>
+      const TaskConstMeta(debugName: "get_qr_bytes", argNames: ["data"]);
+
+  @override
+  Future<void> crateApiSimpleInitApp() {
+    return handler.executeNormal(
+      NormalTask(
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          pdeCallFfi(
+            generalizedFrbRustBinding,
+            serializer,
+            funcId: 5,
             port: port_,
           );
         },
@@ -204,6 +258,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<Uint8List> dco_decode_list_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_list_prim_u_8_strict).toList();
+  }
+
+  @protected
+  List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as List<int>;
   }
 
   @protected
@@ -289,6 +349,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ans_.add(sse_decode_list_prim_u_8_strict(deserializer));
     }
     return ans_;
+  }
+
+  @protected
+  List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var len_ = sse_decode_i_32(deserializer);
+    return deserializer.buffer.getUint8List(len_);
   }
 
   @protected
@@ -391,6 +458,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     for (final item in self) {
       sse_encode_list_prim_u_8_strict(item, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_list_prim_u_8_loose(
+    List<int> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    serializer.buffer.putUint8List(
+      self is Uint8List ? self : Uint8List.fromList(self),
+    );
   }
 
   @protected
