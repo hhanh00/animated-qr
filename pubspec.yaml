@@ -25,6 +25,9 @@ dependencies:
   shared_preferences: ^2.5.3
   form_builder_validators: ^11.2.0
   gap: ^3.0.1
+  mobile_scanner: ^7.0.1
+  convert: ^3.1.2
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:

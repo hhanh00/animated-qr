@@ -6,10 +6,15 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+// These functions are ignored because they are not marked as `pub`: `ec_level_of`
+
 Future<List<Uint8List>> encode({
   required String path,
   required RaptorQParams params,
 }) => RustLib.instance.api.crateApiSimpleEncode(path: path, params: params);
+
+Future<Uint8List?> decode({required List<Uint8List> packets}) =>
+    RustLib.instance.api.crateApiSimpleDecode(packets: packets);
 
 class RaptorQParams {
   final int version;
