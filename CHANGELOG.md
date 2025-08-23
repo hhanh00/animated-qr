@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.4...animated_qr-v1.2.5) (2025-08-23)
+
+
+### Bug Fixes
+
+* ios/macos camera permissions ([#21](https://github.com/hhanh00/animated-qr/issues/21)) ([18dcde4](https://github.com/hhanh00/animated-qr/commit/18dcde476ce9d7a1be59978077ed792799636932))
+
 ## [1.2.4](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.3...animated_qr-v1.2.4) (2025-08-23)
 
 
