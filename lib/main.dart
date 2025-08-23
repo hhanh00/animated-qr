@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:animated_qr/router.dart';
 import 'package:animated_qr/store.dart';
+import 'package:convert/convert.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_qr/src/rust/api/simple.dart';
@@ -30,7 +31,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  List<Widget> qrCodes = [];
+  List<Widget>? qrCodes;
   int i = 0;
   Timer? timer;
 
@@ -48,8 +49,7 @@ class HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body:
-        (i < qrCodes.length) ? qrCodes[i] : null,
+      body: (qrCodes != null) ? qrCodes![i] : SizedBox.shrink(),
     );
   }
 
@@ -74,18 +74,26 @@ class HomePageState extends State<HomePage> {
       qrCodes = packets.map((p) {
         final qr = QrCode(appStore.type, appStore.ecLevel)
           ..addByteData(ByteData.sublistView(p));
-        return Center(child: QrImageView.withQr(qr: qr, size: minSize * 0.8));
+        return Center(
+          child: QrImageView.withQr(
+            qr: qr,
+            size: minSize * 0.8,
+            gapless: false,
+          ),
+        );
       }).toList();
       timer?.cancel();
       timer = Timer.periodic(Duration(milliseconds: appStore.delay), (_) {
-        setState(() => i = (i + 1) % qrCodes.length);
+        setState(() => i = (i + 1) % qrCodes!.length);
       });
     }
   }
 
-  void onScan() async {}
+  void onScan() async {
+    router.push("/scan");
+  }
 
   void onSettings(BuildContext context) async {
-    await GoRouter.of(context).push("/settings");
+    await router.push("/settings");
   }
 }
