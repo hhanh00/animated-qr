@@ -19,7 +19,8 @@ pub async fn encode(path: &str, params: RaptorQParams) -> Result<Vec<Vec<u8>>> {
     let ecl = ec_level_of(params.ec_level);
     let version = qrcode::Version::Normal(params.version as i16);
     let bits = Bits::new(version);
-    let max_length = bits.max_len(ecl)? / 8 - 12 - 3; // header size
+    let max_length = bits.max_len(ecl)? / 8;
+    let max_length = max_length - 20; // header size = raptor params 12 + qr header 4 + packet header 4
     let encoder = Encoder::with_defaults(&data, max_length as u16);
     let header = encoder.get_config().serialize();
     let packets = encoder.get_encoded_packets(params.repair);

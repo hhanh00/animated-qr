@@ -44,7 +44,6 @@ class ScanPageState extends State<ScanPage> {
       });
       final data = await completed.future;
       sub.cancel();
-      print("Finished");
       router.pop();
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await FilePicker.platform.saveFile(
