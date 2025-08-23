@@ -28,7 +28,6 @@ pub async fn encode(path: &str, params: RaptorQParams) -> Result<Vec<Vec<u8>>> {
         .map(|p| {
             let mut packet = header.to_vec();
             packet.extend(p.serialize());
-            println!("{}", hex::encode(&packet));
             packet
         })
         .collect::<Vec<_>>();
