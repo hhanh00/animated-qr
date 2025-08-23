@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.6](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.5...animated_qr-v1.2.6) (2025-08-23)
+
+
+### Bug Fixes
+
+* android and perf improvements ([#23](https://github.com/hhanh00/animated-qr/issues/23)) ([98ffbeb](https://github.com/hhanh00/animated-qr/commit/98ffbeb029f5e2e27ee9cb88678e767567d0c708))
+* disable linux & windows scanner ([98ffbeb](https://github.com/hhanh00/animated-qr/commit/98ffbeb029f5e2e27ee9cb88678e767567d0c708))
+
 ## [1.2.5](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.4...animated_qr-v1.2.5) (2025-08-23)
 
 
