@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:animated_qr/router.dart';
 import 'package:animated_qr/store.dart';
@@ -37,7 +38,7 @@ class HomePageState extends State<HomePage> {
         title: const Text('Animated QR'),
         actions: [
           IconButton(onPressed: onOpen, icon: Icon(Icons.file_open)),
-          IconButton(onPressed: onScan, icon: Icon(Icons.scanner)),
+          if (hasCameraSupport()) IconButton(onPressed: onScan, icon: Icon(Icons.scanner)),
           IconButton(
             onPressed: () => onSettings(context),
             icon: Icon(Icons.settings),
@@ -76,3 +77,5 @@ class HomePageState extends State<HomePage> {
     await router.push("/settings");
   }
 }
+
+bool hasCameraSupport() => !Platform.isLinux && !Platform.isWindows;
