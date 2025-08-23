@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.2...animated_qr-v1.2.3) (2025-08-23)
+
+
+### Bug Fixes
+
+* add image counters ([#17](https://github.com/hhanh00/animated-qr/issues/17)) ([18b3d7b](https://github.com/hhanh00/animated-qr/commit/18b3d7b83d79224d744a427fe0751cb2221ee229))
+
 ## [1.2.2](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.1...animated_qr-v1.2.2) (2025-08-23)
 
 
