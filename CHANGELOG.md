@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.3...animated_qr-v1.2.4) (2025-08-23)
+
+
+### Bug Fixes
+
+* remove low version qr codes ([#19](https://github.com/hhanh00/animated-qr/issues/19)) ([d334766](https://github.com/hhanh00/animated-qr/commit/d33476619ac3a7e2c0f8b4d98519b1cc72345d78))
+
 ## [1.2.3](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.2...animated_qr-v1.2.3) (2025-08-23)
 
 
