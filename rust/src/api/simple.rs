@@ -1,7 +1,8 @@
-use std::{fs::File, io::Read};
+use std::{fs::File, io::Read, sync::Mutex};
 
 use anyhow::Result;
 use flutter_rust_bridge::frb;
+use lazy_static::lazy_static;
 use qrcode::{bits::Bits, EcLevel};
 use raptorq::{Decoder, Encoder, EncodingPacket, ObjectTransmissionInformation};
 
@@ -36,33 +37,44 @@ pub async fn encode(path: &str, params: RaptorQParams) -> Result<Vec<Vec<u8>>> {
     Ok(ser_packets)
 }
 
-#[frb]
-pub async fn decode(mut packets: Vec<Vec<u8>>) -> Result<Option<Vec<u8>>> {
-    if packets.is_empty() {
-        return Ok(None);
+#[frb(sync)]
+pub fn get_qr_bytes(data: &[u8]) -> Result<Vec<u8>> {
+    let mut v = vec![];
+    v.reserve(data.len());
+    let len = data.len();
+    for i in 0..len {
+        let c = if i + 1 < len { data[i + 1] >> 4 } else { 0 };
+        v.push((data[i] << 4) | c);
     }
-    let mut payloads = vec![];
-    for packet in packets.iter_mut() {
-        let len = packet.len();
-        for i in 0..len {
-            let c = if i + 1 < len { packet[i + 1] >> 4 } else { 0 };
-            packet[i] = (packet[i] << 4) | c;
+    let len = (u16::from_be_bytes(v[0..2].try_into().unwrap())) as usize;
+    v.rotate_left(2);
+    v.truncate(len);
+    Ok(v)
+}
+
+#[frb]
+pub async fn decode(packet: &[u8]) -> Result<Option<Vec<u8>>> {
+    {
+        let mut dec = DECODER.lock().unwrap();
+        if dec.is_none() {
+            let oti = ObjectTransmissionInformation::deserialize(packet[0..12].try_into().unwrap());
+            let decoder = Decoder::new(oti);
+            *dec = Some(decoder);
         }
-        let len = (u16::from_be_bytes(packet[0..2].try_into().unwrap())) as usize;
-        let payload = &packet[2..len+2];
-        payloads.push(payload);
     }
 
-    let header = &payloads.first().unwrap()[0..12];
-    let oti = ObjectTransmissionInformation::deserialize(header.try_into().unwrap());
-    let mut decoder = Decoder::new(oti);
-    for ser_packet in payloads {
-        let packet = EncodingPacket::deserialize(&ser_packet[12..]);
-        decoder.add_new_packet(packet);
-    }
-    let result = decoder.get_result();
+    let mut dec = DECODER.lock().unwrap();
+    let decoder = dec.as_mut().unwrap();
+    let packet = EncodingPacket::deserialize(&packet[12..]);
+    let result = decoder.decode(packet);
 
     Ok(result)
+}
+
+#[frb]
+pub async fn end_decode() -> Result<()> {
+    *DECODER.lock().unwrap() = None;
+    Ok(())
 }
 
 fn ec_level_of(level: u8) -> EcLevel {
@@ -79,4 +91,8 @@ fn ec_level_of(level: u8) -> EcLevel {
 pub fn init_app() {
     // Default utilities - feel free to customize
     flutter_rust_bridge::setup_default_user_utils();
+}
+
+lazy_static! {
+    pub static ref DECODER: Mutex<Option<Decoder>> = Mutex::new(None);
 }

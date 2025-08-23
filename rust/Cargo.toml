@@ -10,6 +10,7 @@ crate-type = ["cdylib", "staticlib"]
 anyhow = "1.0.99"
 flutter_rust_bridge = "=2.11.1"
 hex = "0.4.3"
+lazy_static = "1.5.0"
 qrcode = "0.14.1"
 raptorq = "2.0.0"
 
