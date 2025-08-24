@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.24" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const useChoice = localStorage.getItem('vuepress-color-scheme')
+      const systemStatus =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (useChoice === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (useChoice === 'dark' || systemStatus) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <link rel="stylesheet" href="/main.css"><title>Animated QR</title><meta name="description" content="">
+    <link rel="preload" href="/animated_qr/assets/style-CpBbZc0F.css" as="style"><link rel="stylesheet" href="/animated_qr/assets/style-CpBbZc0F.css">
+    <link rel="modulepreload" href="/animated_qr/assets/app-BPIfErfA.js"><link rel="modulepreload" href="/animated_qr/assets/404.html-ZRJ0AR01.js">
+    <link rel="prefetch" href="/animated_qr/assets/index.html-BgpzzqTm.js" as="script"><link rel="prefetch" href="/animated_qr/assets/create.html-DaSGMqAw.js" as="script"><link rel="prefetch" href="/animated_qr/assets/scan.html-OtYUK0QO.js" as="script"><link rel="prefetch" href="/animated_qr/assets/settings.html-DOeMqnf1.js" as="script"><link rel="prefetch" href="/animated_qr/assets/mermaid.esm.min-okYPd2RD.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-41215f8c><main class="page" data-v-41215f8c><div vp-content data-v-41215f8c><h1 data-v-41215f8c>404</h1><blockquote data-v-41215f8c>There&#39;s nothing here.</blockquote><a class="route-link" href="/animated_qr/" data-v-41215f8c>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/animated_qr/assets/app-BPIfErfA.js" defer></script>
+  </body>
+</html>
