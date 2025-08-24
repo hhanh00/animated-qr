@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.7](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.6...animated_qr-v1.2.7) (2025-08-24)
+
+
+### Bug Fixes
+
+* ios version ([#26](https://github.com/hhanh00/animated-qr/issues/26)) ([83bd6fa](https://github.com/hhanh00/animated-qr/commit/83bd6fab4e7dd8aadcc85dba93192105de258e19))
+
 ## [1.2.6](https://github.com/hhanh00/animated-qr/compare/animated_qr-v1.2.5...animated_qr-v1.2.6) (2025-08-23)
 
 
