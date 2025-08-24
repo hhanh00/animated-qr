@@ -29,7 +29,7 @@ class ScanPageState extends State<ScanPage> {
       final sub = controller.barcodes.listen((qr) async {
         final barcode = qr.barcodes.first;
         var data = barcode.rawBytes!;
-        if (Platform.isMacOS)
+        if (Platform.isMacOS || Platform.isIOS)
           data = getQrBytes(data: data);
         if (data.length < 16) return;
         final id = ByteData.sublistView(data).getUint32(12, Endian.big);
