@@ -20,7 +20,6 @@ export default defineUserConfig({
             "settings",
         ]
     }),
-    head: [["link", { rel: "stylesheet", href: "/main.css" }]],
     plugins: [
         searchPlugin({}),
         markdownImagePlugin({
