@@ -10,7 +10,7 @@ import { searchPlugin } from '@vuepress/plugin-search'
 
 export default defineUserConfig({
     title: "Animated QR",
-    base: '/animated_qr/',
+    base: '/animated-qr/',
     bundler: viteBundler(),
     theme: defaultTheme({
         sidebar: [
